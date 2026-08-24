@@ -1,0 +1,45 @@
+SoftVoice SAPI 5
+================
+
+This installs the 1997 SoftVoice speech synthesiser as a set of Windows SAPI 5
+voices, so it can be used by any speech application on this computer - a screen
+reader such as NVDA, JAWS or Narrator, or a book reader such as Balabolka or
+Bookworm.
+
+What gets installed
+-------------------
+
+Forty voices. The engine has twenty built-in personalities - Male, Female,
+Large Male, Child, Giant Male, Mellow Female, Mellow Male, Crisp Male, The Fly,
+Robotoid, Martian, Colossus, Fast Fred, Old Woman, Munchkin, Troll, Nerd,
+Milktoast, Tipsy and Choir Boy - and each is installed twice, once speaking
+English and once speaking Spanish. They appear in your speech settings as
+"SoftVoice Male", "SoftVoice Male (Spanish)" and so on.
+
+Both SAPI 5 interfaces. A 32-bit one for 32-bit applications and a 64-bit one
+for 64-bit applications, so the voices are available whichever kind of program
+you use. Both are installed and registered on 64-bit Windows.
+
+The SoftVoice configuration utility. A settings dialog for the rate, pitch,
+volume and the eleven other parameters the engine exposes, per voice. Anything
+changed there applies to the next thing spoken - nothing needs restarting - and
+is saved as soon as it is changed. A shortcut is added to the Start menu, and
+to the desktop if you ask for one on the next page.
+
+Notes
+-----
+
+The speech engine itself is 32-bit and runs in its own small helper process,
+which both interfaces share. Nothing about the engine is stored in the Windows
+registry: it is registered inside the program folder. The only registry entries
+this installer creates are the ones Windows requires in order to find a speech
+engine at all.
+
+Administrator rights are needed, because speech engines are registered for the
+whole computer rather than for one user. Your own settings are stored per user
+and need no special rights to change.
+
+If anything goes wrong, a full installation log is saved next to the program as
+install.log, and the speech engine writes its own logs to
+%LOCALAPPDATA%\SoftVoice SAPI5\Logs. There is a shortcut to that folder in the
+Start menu, and a button for it in the configuration utility.

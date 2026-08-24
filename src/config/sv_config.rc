@@ -1,0 +1,128 @@
+#include <windows.h>
+
+#include "sv_config_ids.h"
+
+IDI_APPICON ICON "../../installer/softvoice.ico"
+
+// Dialog layout notes, since they are all accessibility decisions and not
+// cosmetic ones:
+//
+//  * Each label sits immediately before its control in this template. A
+//    screen reader derives a control's name from the preceding static text,
+//    so that ordering is what makes every field announce itself. Inserting
+//    anything between a label and its control silently renames the control.
+//  * Every interactive control has WS_TABSTOP, and nothing is ever disabled:
+//    a disabled control drops out of the tab order entirely. A setting that
+//    does not apply says so in its label instead.
+//  * Enumerated settings are CBS_DROPDOWNLIST combo boxes rather than
+//    trackbars. The MSAA proxy for a trackbar reports its value as a
+//    percentage of its range, so a list of eight glottal sources sitting on
+//    the third would be announced as "28" - a number that appears nowhere in
+//    the documentation. A combo box reports the item text verbatim, and
+//    arrow keys still step through the values in place.
+//  * Rate, pitch and volume are plain edit controls with the range spelled
+//    out in the label, because nothing announces a field's limits otherwise.
+//    Those three always apply, so a number is always meaningful.
+//  * Inflection, breathiness, roughness and vowel length are lists instead,
+//    because their first entry is "The voice's own" and that is not a
+//    number. It is also the default: each personality is a complete preset
+//    and there is no value for these that means "neutral", so sending one
+//    the user did not choose overwrites the voice's character - and for
+//    voicing amplitude it drives most of the presets past full scale, which
+//    the engine wraps into an audible crackle.
+//  * Mnemonics are unique across the whole dialog
+//    (V R P U I B G W C N M E A K T L H S F O D), so each Alt+letter goes to
+//    exactly one control. Duplicates do not warn at compile time.
+
+IDD_CONFIG DIALOGEX 0, 0, 366, 330
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION |
+      WS_SYSMENU | WS_MINIMIZEBOX
+CAPTION "SoftVoice Speech Settings"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "&Voice to adjust:", IDC_VOICE_LABEL, 7, 10, 198, 8
+    COMBOBOX        IDC_VOICE, 210, 8, 149, 200,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP | WS_GROUP
+
+    LTEXT           "&Rate (0 to 100, 50 is natural):", IDC_RATE_LABEL,
+                    7, 28, 198, 8
+    EDITTEXT        IDC_RATE, 210, 26, 149, 13,
+                    ES_AUTOHSCROLL | ES_NUMBER | WS_TABSTOP
+
+    LTEXT           "&Pitch (0 to 100, 50 is the voice's own):",
+                    IDC_PITCH_LABEL, 7, 45, 198, 8
+    EDITTEXT        IDC_PITCH, 210, 43, 149, 13,
+                    ES_AUTOHSCROLL | ES_NUMBER | WS_TABSTOP
+
+    LTEXT           "Vol&ume (0 to 100):", IDC_VOLUME_LABEL, 7, 62, 198, 8
+    EDITTEXT        IDC_VOLUME, 210, 60, 149, 13,
+                    ES_AUTOHSCROLL | ES_NUMBER | WS_TABSTOP
+
+    LTEXT           "&Inflection, or the voice's own:",
+                    IDC_INFLECTION_LABEL, 7, 79, 198, 8
+    COMBOBOX        IDC_INFLECTION, 210, 77, 149, 140,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "&Breathiness, or the voice's own:",
+                    IDC_BREATHINESS_LABEL, 7, 96, 198, 8
+    COMBOBOX        IDC_BREATHINESS, 210, 94, 149, 140,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Rou&ghness, or the voice's own:",
+                    IDC_ROUGHNESS_LABEL, 7, 113, 198, 8
+    COMBOBOX        IDC_ROUGHNESS, 210, 111, 149, 140,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Vo&wel length, or the voice's own:",
+                    IDC_VOWEL_LABEL, 7, 130, 198, 8
+    COMBOBOX        IDC_VOWEL, 210, 128, 149, 140,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Glottal sour&ce:", IDC_GLOTTAL_LABEL, 7, 147, 198, 8
+    COMBOBOX        IDC_GLOTTAL, 210, 145, 149, 140,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "I&ntonation:", IDC_INTONATION_LABEL, 7, 164, 198, 8
+    COMBOBOX        IDC_INTONATION, 210, 162, 149, 100,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Voicing &mode:", IDC_VOICING_LABEL, 7, 181, 198, 8
+    COMBOBOX        IDC_VOICING, 210, 179, 149, 100,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "G&ender of the vocal tract:", IDC_GENDER_LABEL,
+                    7, 198, 198, 8
+    COMBOBOX        IDC_GENDER, 210, 196, 149, 100,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Voicing &amplitude:", IDC_AVBIAS_LABEL, 7, 215, 198, 8
+    COMBOBOX        IDC_AVBIAS, 210, 213, 149, 120,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Volume ma&keup:", IDC_MAKEUP_LABEL, 7, 232, 198, 8
+    COMBOBOX        IDC_MAKEUP, 210, 230, 149, 120,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "Sample ra&te, all voices (Hz):", IDC_SAMPLERATE_LABEL,
+                    7, 249, 198, 8
+    COMBOBOX        IDC_SAMPLERATE, 210, 247, 149, 100,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    LTEXT           "&Log detail, all voices:", IDC_LOGLEVEL_LABEL,
+                    7, 266, 198, 8
+    COMBOBOX        IDC_LOGLEVEL, 210, 264, 149, 100,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+
+    AUTOCHECKBOX    "Speak eac&h change as it is made", IDC_AUTOPREVIEW,
+                    7, 284, 352, 10, WS_TABSTOP
+
+    LTEXT           "", IDC_STATUS, 7, 298, 352, 16, WS_GROUP
+
+    PUSHBUTTON      "&Speak test", IDC_SPEAK, 7, 312, 84, 14,
+                    WS_TABSTOP | WS_GROUP
+    PUSHBUTTON      "Reset to de&faults", IDC_RESET, 96, 312, 84, 14,
+                    WS_TABSTOP
+    PUSHBUTTON      "&Open log folder", IDC_OPENLOGS, 185, 312, 84, 14,
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "&Done", IDCANCEL, 275, 312, 84, 14, WS_TABSTOP
+END

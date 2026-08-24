@@ -1,0 +1,15 @@
+# Build trees and staged output
+build/
+build_x86/
+build_x64/
+output/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+
+# Rendered audio. Regenerate with `python tools\render_samples.py`, or take the
+# samples archive from the Releases page - 22 MB of WAV does not belong in a
+# clone that most people only want the source from.
+samples/

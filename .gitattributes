@@ -1,0 +1,17 @@
+# Text files are normalised to LF in the repository and checked out with
+# whatever the platform wants.
+* text=auto
+
+# Never let line-ending conversion near these. A CRLF translation applied to a
+# DLL or an EXE corrupts it silently - the file still looks fine in a listing,
+# and the engine simply stops loading.
+*.dll  binary
+*.DLL  binary
+*.exe  binary
+*.ico  binary
+*.wav  binary
+
+# Keep these as they are written. The .def file is fed to the linker and the
+# manifest to mt.exe; neither benefits from normalisation.
+*.def  text eol=crlf
+*.manifest text eol=crlf
