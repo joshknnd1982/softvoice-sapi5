@@ -11,10 +11,17 @@
 // None of this comes from the registry. The catalogue is compiled in and the
 // enumerator hands SAPI tokens built from it, so installing writes only the
 // COM registration SAPI needs to find the DLL at all.
+//
+// Which of the forty an installation actually publishes is a separate
+// question, answered by voices.ini beside the engine - see available_voices
+// at the foot of this file. The catalogue itself never shrinks: a voice that
+// is not published can still be named, so a token stored by an application
+// before the voice was deselected still resolves instead of failing oddly.
 
 #include <cstddef>
 #include <string>
 #include <vector>
+#include <windows.h>
 
 namespace SoftVoice {
 
@@ -139,14 +146,28 @@ private:
 // the engine load Spanish at all.
 [[nodiscard]] bool spanish_installed();
 
+// The key the selection file uses for a voice: "en.Male", "es.Choir Boy".
+[[nodiscard]] std::wstring selection_key(const Voice& voice);
+
+// voices.ini beside the engine, where the installer records which of the
+// forty voices this installation publishes.
+[[nodiscard]] std::wstring selection_path(HMODULE module = nullptr);
+
 // The voices that can actually speak on this machine: all twenty
 // personalities in English, plus the same twenty in Spanish when
-// Svspan32.dll is present.
+// Svspan32.dll is present, narrowed to the ones the selection file keeps.
 //
-// Decided by looking for that file rather than by asking the engine. The
-// SAPI enumerator runs every time an application lists voices, and starting
-// a host to answer it would make opening a speech settings dialog take
-// seconds; the engine consults the same file either way.
+// Both questions are answered from files rather than by asking the engine.
+// The SAPI enumerator runs every time an application lists voices, and
+// starting a host to answer it would make opening a speech settings dialog
+// take seconds; the engine consults the same files either way.
+//
+// The selection file is optional, and an absent, empty or unreadable one
+// means "everything", not "nothing" - a build tree has none, and neither
+// does an installation made before the installer offered the choice. For the
+// same reason a selection that would hide every last voice is ignored: that
+// is not a choice anybody makes on purpose, and honouring it would leave the
+// computer silent with no voice left to explain why.
 [[nodiscard]] std::vector<Voice> available_voices();
 
 }  // namespace SoftVoice

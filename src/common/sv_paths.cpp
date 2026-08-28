@@ -2,6 +2,8 @@
 
 #include <shlobj.h>
 
+#include <string>
+
 namespace SoftVoice {
 namespace paths {
 
@@ -75,6 +77,47 @@ bool file_exists(const std::wstring& path)
     const DWORD attrs = GetFileAttributesW(path.c_str());
     return attrs != INVALID_FILE_ATTRIBUTES &&
            !(attrs & FILE_ATTRIBUTE_DIRECTORY);
+}
+
+bool read_text_file(const std::wstring& path, std::wstring* out)
+{
+    HANDLE file = CreateFileW(path.c_str(), GENERIC_READ,
+                              FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                              OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (file == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    LARGE_INTEGER size = {};
+    if (!GetFileSizeEx(file, &size) || size.QuadPart > (16 << 20)) {
+        CloseHandle(file);
+        return false;
+    }
+    std::string bytes(static_cast<std::size_t>(size.QuadPart), '\0');
+    DWORD read = 0;
+    const bool ok = bytes.empty() ||
+                    (ReadFile(file, bytes.data(),
+                              static_cast<DWORD>(bytes.size()), &read,
+                              nullptr) &&
+                     read == bytes.size());
+    CloseHandle(file);
+    if (!ok) {
+        return false;
+    }
+    if (bytes.size() >= 3 && static_cast<unsigned char>(bytes[0]) == 0xEF &&
+        static_cast<unsigned char>(bytes[1]) == 0xBB &&
+        static_cast<unsigned char>(bytes[2]) == 0xBF) {
+        bytes.erase(0, 3);
+    }
+    if (bytes.empty()) {
+        out->clear();
+        return true;
+    }
+    const int needed = MultiByteToWideChar(
+        CP_UTF8, 0, bytes.data(), static_cast<int>(bytes.size()), nullptr, 0);
+    out->assign(static_cast<std::size_t>(needed), L'\0');
+    MultiByteToWideChar(CP_UTF8, 0, bytes.data(),
+                        static_cast<int>(bytes.size()), out->data(), needed);
+    return true;
 }
 
 std::wstring module_dir(HMODULE module)

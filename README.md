@@ -40,7 +40,8 @@ running. This project takes the same engine and makes it available to
 
 Each appears twice: `SoftVoice Male` speaks English, `SoftVoice Male (Spanish)`
 speaks Spanish. Those are the only two languages the engine has — there is no
-German rule set in this package.
+German rule set in this package. Forty voices in all, and the installer lets you
+choose exactly which of them to have — see below.
 
 Hear all forty: the **samples archive** on the
 [Releases page](https://github.com/joshknnd1982/softvoice-sapi5/releases/latest)
@@ -58,17 +59,61 @@ It installs:
 
 - both SAPI 5 interfaces, 32-bit and 64-bit, and registers them
 - the engine and its host
+- the voices you chose, out of the forty on offer
 - the **SoftVoice Speech Settings** utility, with a desktop shortcut
 - optionally, the diagnostic tools
 
 Then pick a SoftVoice voice in your screen reader or in Windows speech
 settings. To remove it, use Apps and Features as normal.
 
+### Choosing which voices to install
+
+Forty voices in the list is a lot to page through if you only ever wanted two,
+so the components page lets you pick them one at a time. Every voice is its own
+check box, grouped under **English voices** and **Spanish voices**: check a
+language to take all twenty of it, or open the group and choose individually.
+Five ready-made choices sit above the tree — pick one and adjust it, or start
+from **Custom**:
+
+| Type | What you get |
+|---|---|
+| Everything | all forty voices, both languages, and the diagnostic tools |
+| The everyday voices | the eight natural-sounding personalities, in English |
+| English only | all twenty personalities, speaking English |
+| Spanish only | all twenty personalities, speaking Spanish |
+| Custom | pick the languages and the voices one at a time |
+
+Choosing few costs nothing and gains nothing but a shorter list: the catalogue
+is compiled into the DLL, so no voice takes disk space of its own. What the
+choice really controls is which tokens the enumerator hands SAPI, and that is
+recorded in `voices.ini` beside the program — one line per voice, `1` to publish
+it and `0` to hide it. Change a line by hand (the folder is protected, so with
+an elevated editor) and the next application to ask Windows for its voices sees
+the change; nothing needs restarting. Deleting the file, or setting every line
+to `0`, publishes everything again rather than leaving the machine silent.
+
+Running the installer again is the easier way round: it opens on whatever was
+chosen last time, so voices can be added or dropped without uninstalling first.
+
+The one part of the choice that is a real file is Spanish itself. `Svspan32.dll`
+is the engine's Spanish letter-to-sound rule set, and it is only laid down when
+you keep at least one Spanish voice — and removed again if you later drop them
+all.
+
+At least one voice has to be chosen; the wizard refuses to go on otherwise,
+since the alternative is a speech engine Windows can find and cannot use.
+
+### Accessibility
+
 The installer is built to be usable by the people most likely to want these
 voices: every page is standard Win32 controls that screen readers read
-natively, nothing steals focus, no page auto-advances, and the final page
-states in text exactly what happened — which interfaces registered, whether all
-forty voices are available, and where the logs are.
+natively, nothing steals focus, and no page auto-advances. The forty voices are
+check boxes in the standard components tree rather than a custom page, so each
+is announced with its name and its check box role as it is focused, and each
+carries its language in the same form the voice itself uses — `Male`,
+`Male (Spanish)` — so an item read on its own is unambiguous. The final page
+states in text exactly what happened: which interfaces registered, how many
+voices of each language are published, and where the logs are.
 
 ## The configuration utility
 

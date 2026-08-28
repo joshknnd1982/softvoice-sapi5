@@ -415,8 +415,13 @@ int wmain(int argc, wchar_t** argv)
     ULONG count = 0;
     tokens->GetCount(&count);
     wprintf(L"  %lu voices published\n", count);
-    check(count == 40 || count == 20,
-          L"publishes 40 voices, or 20 without Svspan32.dll");
+    // Not a fixed forty any more. The installer writes voices.ini beside the
+    // engine listing which of the catalogue this installation publishes, and
+    // Spanish needs Svspan32.dll on top of that, so anything from one voice
+    // to all forty is a correct answer. Zero never is: an installation with
+    // no voice in it is one that cannot speak.
+    check(count >= 1 && count <= 40,
+          L"publishes between 1 and 40 voices, per voices.ini and Svspan32.dll");
 
     // Every token must carry the attributes an application filters on, and
     // every name must be distinct or SAPI cannot tell them apart.

@@ -6,15 +6,33 @@ voices, so it can be used by any speech application on this computer - a screen
 reader such as NVDA, JAWS or Narrator, or a book reader such as Balabolka or
 Bookworm.
 
-What gets installed
+Choosing the voices
 -------------------
 
-Forty voices. The engine has twenty built-in personalities - Male, Female,
-Large Male, Child, Giant Male, Mellow Female, Mellow Male, Crisp Male, The Fly,
-Robotoid, Martian, Colossus, Fast Fred, Old Woman, Munchkin, Troll, Nerd,
-Milktoast, Tipsy and Choir Boy - and each is installed twice, once speaking
-English and once speaking Spanish. They appear in your speech settings as
-"SoftVoice Male", "SoftVoice Male (Spanish)" and so on.
+The engine has twenty built-in personalities - Male, Female, Large Male, Child,
+Giant Male, Mellow Female, Mellow Male, Crisp Male, The Fly, Robotoid, Martian,
+Colossus, Fast Fred, Old Woman, Munchkin, Troll, Nerd, Milktoast, Tipsy and
+Choir Boy - and each can speak either English or Spanish. Every combination is
+a separate voice, so there are forty to choose from. They appear in your speech
+settings as "SoftVoice Male", "SoftVoice Male (Spanish)" and so on.
+
+The next page but one lets you choose exactly which of the forty to install.
+Each voice is a check box, grouped by language, and there is a list of ready
+made choices above the tree:
+
+  Everything          all forty voices, and the diagnostic tools
+  The everyday voices the eight natural-sounding personalities, in English
+  English only        all twenty personalities, speaking English
+  Spanish only        all twenty personalities, speaking Spanish
+  Custom              pick the languages and the voices one at a time
+
+Pick a ready made choice and then adjust it, or start from Custom. At least one
+voice has to be chosen. Nothing is lost by choosing few: no voice takes any disk
+space of its own, and running this installer again reopens on whatever you chose
+last time, so voices can be added or removed later without uninstalling.
+
+What else gets installed
+------------------------
 
 Both SAPI 5 interfaces. A 32-bit one for 32-bit applications and a 64-bit one
 for 64-bit applications, so the voices are available whichever kind of program
@@ -34,6 +52,11 @@ which both interfaces share. Nothing about the engine is stored in the Windows
 registry: it is registered inside the program folder. The only registry entries
 this installer creates are the ones Windows requires in order to find a speech
 engine at all.
+
+Your choice of voices is recorded in voices.ini beside the program, one line per
+voice, which is what the engine reads when Windows asks it for the list. The
+Spanish rule set, Svspan32.dll, is the one part of the choice that is a real
+file: it is installed only if you keep at least one Spanish voice.
 
 Administrator rights are needed, because speech engines are registered for the
 whole computer rather than for one user. Your own settings are stored per user
