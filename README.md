@@ -279,11 +279,17 @@ run-to-run noise floor instead.
   add-on that keeps the engine alive, and the source of the host protocol and
   much of the hard-won knowledge about the engine's parameters that this
   wrapper is built on.
+- [**gozaltech/BstSpeech-sapi**](https://github.com/gozaltech/BstSpeech-sapi) —
+  the SAPI 5 wrapper that the COM and SAPI plumbing in `src/sapi/` was adapted
+  from.
 
 ## Licence
 
-The SAPI 5 wrapper, the configuration utility, the tools and the installer in
-this repository are open source.
+The SAPI 5 wrapper, the configuration utility, the tools and the installer
+written for this project are licensed under the MIT License (see
+[LICENSE](LICENSE)). The files that [NOTICE.md](NOTICE.md) lists as adapted from
+other people's work (the COM and SAPI plumbing in `src/sapi/`, and
+`tools/svhost.py`) are not covered by it.
 
 `SVctl32.DLL`, `SVENG32.DLL`, `Svspan32.dll` and `svwebspeak-host.exe` are
 proprietary 1997 SoftVoice, Inc. / Productivity Works files and are **not**
